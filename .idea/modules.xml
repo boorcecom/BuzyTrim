@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/BuzyTrim.iml" filepath="$PROJECT_DIR$/BuzyTrim.iml" />
+      <module fileurl="file://$PROJECT_DIR$/buzytrim/buzytrim.iml" filepath="$PROJECT_DIR$/buzytrim/buzytrim.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libsuperuser/libsuperuser.iml" filepath="$PROJECT_DIR$/libsuperuser/libsuperuser.iml" />
+    </modules>
+  </component>
+</project>
+

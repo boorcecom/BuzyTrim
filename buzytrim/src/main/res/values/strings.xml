@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BuzyTrim</string>
+    <string name="fsTrimAll_button">fstrim sur data et cache</string>
+    <string name="fsTrimSystem_button">fstrim sur system</string>
+    <string name="doFsTrim_string">fstrim en cours sur :</string>
+    <string name="fsTrimFail_string">echec fstrim sur :</string>
+    <string name="initializing">initialisation&#8230;</string>
+    <string name="hasSU_checkBox">Root OK.</string>
+    <string name="hasBusy_checkBox">Busybox OK.</string>
+    <string name="checkroot_string">Vérification des droits root&#8230;</string>
+    <string name="noBusy_string">BusyBox introuvable !</string>
+    <string name="recheckRoot_menu">Revérifier Root.</string>
+    <string name="dialogRootBusyFail">Prérequis en échec.</string>
+    <string name="textRootBusyFail">Un ou plusieurs prérequis sont en échec :</string>
+    <string name="textRootFail">\n- Android n\'est pas rooté !\nRegardez sur un site type xda-developpers pour la solution pour votre téléphone.</string>
+    <string name="textBusyFail">\n- L\'outil busybox n\'est pas installé\nCherchez Busybox sur Google Play Store.</string>
+
+</resources>
