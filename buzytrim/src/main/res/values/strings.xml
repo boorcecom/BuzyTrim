@@ -16,5 +16,10 @@
     <string name="textRootBusyFail">Un ou plusieurs prérequis sont en échec :</string>
     <string name="textRootFail">\n- Android n\'est pas rooté !\nRegardez sur un site type xda-developpers pour la solution pour votre téléphone.</string>
     <string name="textBusyFail">\n- L\'outil busybox n\'est pas installé\nCherchez Busybox sur Google Play Store.</string>
+    <string name="rildpid">rild PID:</string>
+    <string name="reRild_button">redémarrer rild</string>
+    <string name="doReRILD_string">relance de rild</string>
+    <string name="reRILDFail_string">echec restart du RILD</string>
+
 
 </resources>

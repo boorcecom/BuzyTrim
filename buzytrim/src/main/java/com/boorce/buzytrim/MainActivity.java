@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 import eu.chainfire.libsuperuser.Shell;
 import java.util.List;
@@ -20,6 +21,8 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     private String busyPath=null;
+
+    private int rild_pid=0;
 
     private class Startup extends AsyncTask<Void, Void, Void> {
         private ProgressDialog dialog = null;
@@ -49,6 +52,7 @@ public class MainActivity extends Activity {
             // Let's do some SU stuff
             suAvailable = Shell.SU.available();
             busyPath=new sysLinuxTools().getBusyPath();
+            rild_pid=new sysLinuxTools().getRildPID();
             return null;
         }
 
@@ -57,6 +61,8 @@ public class MainActivity extends Activity {
             boolean hasNoSU=false;
             boolean hasNoBusybox=false;
             dialog.dismiss();
+            String message=(new StringBuilder()).append(getString(R.string.rildpid)).append(rild_pid).toString();
+            ((TextView) findViewById(R.id.rildpid_text)).setText(message);
             if(suAvailable) {
                 ((CheckBox) findViewById(R.id.hasSUCheckBox)).setChecked(true);
                 (findViewById(R.id.fsTrimSystemButton)).setEnabled(true);
@@ -185,7 +191,7 @@ public class MainActivity extends Activity {
             } else {
                 message=returnStr.toString();
             }
-            this.publishProgress("toast",message);
+            this.publishProgress("toast", message);
             return null;
         }
 
@@ -200,6 +206,69 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(Void result) {
+            dialog.dismiss();
+        }
+    }
+
+    private class reRild extends AsyncTask<Void, String, Void> {
+        private ProgressDialog dialog = null;
+        private Context context = null;
+
+        public reRild setContext(Context context) {
+            this.context = context;
+            return this;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // We're creating a progress dialog here because we want the user to wait.
+            // If in your app your user can just continue on with clicking other things,
+            // don't do the dialog thing.
+
+            dialog = new ProgressDialog(context);
+            dialog.setMessage(getString(R.string.checkroot_string));
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // Let's do some SU stuff
+            List<String> returnStr;
+            String message;
+            String suCommand;
+
+            this.publishProgress("dialog",getString(R.string.doReRILD_string));
+            if(rild_pid!=0) {
+                suCommand = (new StringBuilder()).append("kill -HUP ").append(rild_pid).toString();
+                returnStr = Shell.SU.run(suCommand);
+                if (returnStr == null) {
+                    message = getString(R.string.reRILDFail_string);
+                } else {
+                    message = (new StringBuilder()).append(getString(R.string.rildpid)).append(rild_pid).toString();
+                }
+            } else {
+                message = getString(R.string.reRILDFail_string);
+            }
+            this.publishProgress("toast", message);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            if (values[0].equals("toast")) {
+                Toast.makeText(MainActivity.this, values[1], Toast.LENGTH_SHORT).show();
+            } else {
+                dialog.setMessage(values[1]);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            rild_pid = new sysLinuxTools().getRildPID();
+            String message = (new StringBuilder()).append(getString(R.string.rildpid)).append(rild_pid).toString();
+            ((TextView) findViewById(R.id.rildpid_text)).setText(message);
             dialog.dismiss();
         }
     }
@@ -251,6 +320,14 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         (new FsTrimSystem()).setContext(MainActivity.this).execute();
+                    }
+                });
+
+        (findViewById(R.id.reRild)).
+                setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        (new reRild()).setContext(MainActivity.this).execute();
                     }
                 });
 

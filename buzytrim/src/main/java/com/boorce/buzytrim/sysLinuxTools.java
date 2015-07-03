@@ -21,6 +21,13 @@ public class sysLinuxTools {
         return Shell.SH.run("uname -r").toString();
     }
 
-    
+    public int getRildPID() {
+        String rilPid=Shell.SH.run("ps rild|grep rild|awk ' { print $2 } '").toString();
+        int returnData=0;
+        if(rilPid!=null) {
+            returnData=Integer.decode(rilPid.substring(1,rilPid.length()-1));
+        }
+        return returnData;
+    }
 
 }
